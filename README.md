@@ -1,5 +1,8 @@
 # DIP_proj
 
-1. Edge
+This is DIP final project.
+
+## ToDo
+1. Segmentaion
 2. Histo
-3. Filter
+3. Filtering
