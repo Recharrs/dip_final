@@ -22,6 +22,12 @@ function Is = segmentation(I)
     thre = 1;
     It = thresholding(Is, thre, 1);
     
+    % If foreground and background is switched, change back
+    [M, N] = size(It);
+    if It(floor(M / 2), floor(N / 2)) == 0
+        It = 1 - It;
+    end
+    
     % Make the foreground colored only
     Is = noBackground(I, It);
 end
