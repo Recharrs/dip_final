@@ -1,20 +1,27 @@
-% IM: original image (3D, type single)
+% I: original image (3D, type single)
 % blurSize: size of averaging filter (odd number prefered)
-% threshold: threshold for foreground
 % Is: segmented image, only foreground is colored (3D)
-function Is = segmentation(IM, blurSize, threshold)
+function Is = segmentation(I)
     % Make sure the image is in type single
-    IM = im2single(IM);
+    I = im2single(I);
+    Ib = I;
     
-    % Get the RGB and Intensity for IM
-    [R, G, B, I] = getRGBI(IM);
+    % Blur the color image
+    % blurSize: size of averaging filter (odd number prefered)
+    blurSize = 7;
+    for i = 1 : 3
+        Ic = I(:, :, i);
+        Ib(:, :, i) = blurImage(Ic, blurSize);
+    end
     
-    % Blur the image
-    Ib = blurImage(I, blurSize);
+    % Apply K-means segmentation algorithm
+    Is = kMeansSegment(Ib);
     
     % Thresholding the blurred image, only the foreground has value 1
-    It = thresholding(Ib, threshold, 1);
+    % thre: threshold
+    thre = 1;
+    It = thresholding(Is, thre, 1);
     
     % Make the foreground colored only
-    Is = noBackground(IM, It);
+    Is = noBackground(I, It);
 end
