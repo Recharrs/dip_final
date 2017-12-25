@@ -1,27 +1,25 @@
 function output = impression(input, rad, len, iter);
-
+  tic;
   input = double(input) / 255;
-
-  szIm = size(input);
-  szIm = szIm(1:2);
+  [m, n, d] = size(input);
 
   % Set up x, y coordinate images, and canvas.
-  [x y] = meshgrid(1:szIm(2), 1:szIm(1));
-  canvas = zeros([szIm, 3]);
-  canvas(:) = -1; %% Initially mark the canvas with a value out of range.
-  %% Negative values will be used to denote pixels which are unpainted.
-
-  % Random number seed
-  rand('seed', 29645);
+  [x y] = meshgrid(1:n, 1:m);
+  output = zeros([m, n, 3]);
+  output(:) = -1; 
 
   % Orientation of paint brush strokes
   theta = 2 * pi * rand(1,1);
 
-  tic;
+  rad_init = rad;
+  len_init = len;
   for k = 1 : iter
+    rad = floor(mod(rand * 100, rad_init)) ;
+    len = floor(mod(rand * 100, len_init)) ;
+    
     % Randomly select stroke center
-    cntr = floor(rand(2,1) .* [szIm(2); szIm(1)])+1;
-    cntr = min(cntr, [szIm(2); szIm(1)]);
+    cntr = floor(rand(2,1) .* [n; m])+1;
+    cntr = min(cntr, [n; m]);
     
     % Grab colour from image at center position of the stroke.
     c = reshape(input(cntr(2), cntr(1), :),3,1);
@@ -30,10 +28,10 @@ function output = impression(input, rad, len, iter);
     delta = [cos(theta); sin(theta)] * len;
     
     % Add the stroke to the canvas
-    canvas = paintStroke(canvas, x, y, cntr - delta, cntr + delta, c, rad);
+    output = paintStroke(output, x, y, cntr - delta, cntr + delta, c, rad);
   end
-
-  output = canvas;
-  output = uint8(canvas * 255);
-
+  
+  % in uint8 form
+  output = uint8(output * 255);
+  toc;
 end

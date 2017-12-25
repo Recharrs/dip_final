@@ -1,9 +1,6 @@
 function [mrkd] = markStroke(mrkd, p0, p1, rad, val)
-  %% Mark the pixels that will be painted by
-  %% a stroke from pixel p0 = (x0, y0) to pixel p1 = (x1, y1).
-  %% These pixels are set to val in the ny x nx double array mrkd.
-  %% The paintbrush is circular with radius rad>0
   szIm = size(mrkd); szIm = szIm(1:2);
+  
   nx = szIm(2);
   ny = szIm(1);
   p0 = p0(:);
@@ -71,22 +68,4 @@ function [mrkd] = markStroke(mrkd, p0, p1, rad, val)
       mrkd(xy) = val;
     end 
   end
-  
-  return;
-  
-  rad = 5;
-  halfL = 20;
-  szIm = [100 100];
-  mrkd = zeros(szIm);
-  rand('seed', 29645);
-
-  for k = 1:100
-    cnt = rand(2,1) .* [szIm(2); szIm(1)];
-    theta = 2 * pi * rand(1,1);
-    dir = [cos(theta); sin(theta)] * halfL;
-    
-    mrkd = markStroke(mrkd, cnt-dir, cnt+dir, rad, k);
-    
-  end
-
 end
