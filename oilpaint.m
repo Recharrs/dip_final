@@ -1,5 +1,6 @@
 function output = oilpaint(input, m, n);
 	%Define the matrix size of  your convience.	
+	input = im2uint8(input);
 	output = uint8(zeros([size(input,1)-m,size(input,2)-n,3]));
 	%Calculate the histogram for each RGB value.
 	for k = 1:3
