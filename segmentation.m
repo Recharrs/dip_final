@@ -1,7 +1,7 @@
 % I: original image (3D, type single)
 % blurSize: size of averaging filter (odd number prefered)
 % Is: segmented image, only foreground is colored (3D)
-function [Is1, Is2] = segmentation(I)
+function [Is1, Is2, It1, It2] = segmentation(I)
     % Make sure the image is in type single
     I = im2single(I);
     Ib = I;
